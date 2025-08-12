@@ -1,0 +1,41 @@
+export class User {
+  static async me() {
+    try {
+      const response = await fetch('/api/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${this.getToken()}`
+        }
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur User.me:', error);
+      throw error;
+    }
+  }
+
+  static async updateMyUserData(data) {
+    try {
+      const response = await fetch('/api/users/me', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.getToken()}`
+        },
+        body: JSON.stringify(data)
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur updateMyUserData:', error);
+      throw error;
+    }
+  }
+
+  static getToken() {
+    // Web: localStorage, Mobile: AsyncStorage ou SecureStore
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('auth_token');
+    }
+    // Pour React Native
+    return global.authToken || null;
+  }
+}

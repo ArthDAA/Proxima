@@ -1,0 +1,24 @@
+export const createPageUrl = (page) => {
+  // Web: utilise React Router
+  if (typeof window !== 'undefined') {
+    return `/${page.toLowerCase()}`;
+  }
+  // Mobile: utilise React Navigation
+  return page;
+};
+
+export const navigateTo = (navigation, page, params = {}) => {
+  // Web: utilise useNavigate de React Router
+  if (typeof window !== 'undefined') {
+    window.history.pushState({}, '', createPageUrl(page));
+    return;
+  }
+  // Mobile: utilise React Navigation
+  if (navigation) {
+    navigation.navigate(page, params);
+  }
+};
+
+// Détection de plateforme
+export const isWeb = () => typeof window !== 'undefined';
+export const isMobile = () => !isWeb();

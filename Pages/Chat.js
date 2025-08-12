@@ -275,4 +275,4 @@ ${analysis.mediation_suggested ? '\n💡 **Il semble y avoir un conflit relation
         </div>
       </div>
     </div>
-  )
+  )}
