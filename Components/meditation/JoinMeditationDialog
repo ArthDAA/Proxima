@@ -1,0 +1,139 @@
+import React, { useState } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Conversation } from "@/entities/all";
+import { User } from "@/entities/User";
+import { Search, Users } from "lucide-react";
+
+export default function JoinMediationDialog({ open, onOpenChange, onJoined }) {
+  const [code, setCode] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const joinMediation = async () => {
+    if (!code.trim()) return;
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const user = await User.me();
+      
+      // Chercher la médiation avec ce code
+      const mediations = await Conversation.filter({
+        mediation_code: code.trim().toUpperCase()
+      });
+
+      if (mediations.length === 0) {
+        setError("Code de médiation introuvable");
+        setIsLoading(false);
+        return;
+      }
+
+      const mediation = mediations[0];
+
+      // Vérifier si l'utilisateur est déjà participant
+      if (mediation.participants && mediation.participants.includes(user.email)) {
+        setError("Vous participez déjà à cette médiation");
+        setIsLoading(false);
+        return;
+      }
+
+      // Ajouter l'utilisateur aux participants
+      const updatedParticipants = [...(mediation.participants || []), user.email];
+      
+      await Conversation.update(mediation.id, {
+        participants: updatedParticipants
+      });
+
+      onJoined();
+      onOpenChange(false);
+      setCode("");
+    } catch (error) {
+      console.error("Erreur rejoindre médiation:", error);
+      setError("Erreur lors de la connexion à la médiation");
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleClose = () => {
+    onOpenChange(false);
+    setCode("");
+    setError("");
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Users className="w-5 h-5" style={{ color: 'var(--primary)' }} />
+            Rejoindre une médiation
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="code">Code de médiation</Label>
+            <Input
+              id="code"
+              placeholder="Ex: ABC12345"
+              value={code}
+              onChange={(e) => setCode(e.target.value.toUpperCase())}
+              maxLength={8}
+              className="text-center text-lg font-mono tracking-wider"
+              style={{
+                borderColor: error ? '#ef4444' : 'var(--border)',
+                backgroundColor: 'var(--background)'
+              }}
+            />
+            {error && (
+              <p className="text-sm text-red-600">{error}</p>
+            )}
+          </div>
+
+          <div className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
+            <p>Demandez le code à la personne qui a créé la médiation.</p>
+          </div>
+        </div>
+
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            onClick={handleClose}
+            className="flex-1"
+            disabled={isLoading}
+          >
+            Annuler
+          </Button>
+          <Button
+            onClick={joinMediation}
+            disabled={isLoading || !code.trim()}
+            className="flex-1"
+            style={{
+              backgroundColor: 'var(--primary)',
+              color: 'var(--primary-foreground)'
+            }}
+          >
+            {isLoading ? (
+              "Connexion..."
+            ) : (
+              <>
+                <Search className="w-4 h-4 mr-2" />
+                Rejoindre
+              </>
+            )}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}

@@ -1,0 +1,72 @@
+import React from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Sparkles, Users, Heart, Lightbulb } from "lucide-react";
+
+export default function AnalysisCard({ analysis }) {
+  return (
+    <Card className="border-2" style={{ borderColor: 'var(--primary)' }}>
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2" style={{ color: 'var(--primary)' }}>
+          <Sparkles className="w-5 h-5" />
+          Analyse de votre situation
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <Heart className="w-4 h-4" style={{ color: 'var(--primary)' }} />
+            <h4 className="font-medium" style={{ color: 'var(--foreground)' }}>
+              État émotionnel
+            </h4>
+          </div>
+          <p className="text-sm pl-6" style={{ color: 'var(--muted-foreground)' }}>
+            {analysis.emotional_state}
+          </p>
+        </div>
+
+        {analysis.identified_issues && analysis.identified_issues.length > 0 && (
+          <div>
+            <h4 className="font-medium mb-2" style={{ color: 'var(--foreground)' }}>
+              Problématiques identifiées
+            </h4>
+            <ul className="text-sm space-y-1 pl-4" style={{ color: 'var(--muted-foreground)' }}>
+              {analysis.identified_issues.map((issue, index) => (
+                <li key={index}>• {issue}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {analysis.action_suggestions && analysis.action_suggestions.length > 0 && (
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Lightbulb className="w-4 h-4" style={{ color: 'var(--primary)' }} />
+              <h4 className="font-medium" style={{ color: 'var(--foreground)' }}>
+                Suggestions d'action
+              </h4>
+            </div>
+            <ul className="text-sm space-y-1 pl-6" style={{ color: 'var(--muted-foreground)' }}>
+              {analysis.action_suggestions.map((suggestion, index) => (
+                <li key={index}>• {suggestion}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {analysis.mediation_suggested && (
+          <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--accent)' }}>
+            <div className="flex items-center gap-2 mb-1">
+              <Users className="w-4 h-4" style={{ color: 'var(--primary)' }} />
+              <span className="font-medium text-sm" style={{ color: 'var(--foreground)' }}>
+                Médiation suggérée
+              </span>
+            </div>
+            <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+              Il semble y avoir un conflit relationnel. Voulez-vous créer une médiation ?
+            </p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

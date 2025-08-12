@@ -1,0 +1,42 @@
+import React from 'react';
+import { Card } from "@/components/ui/card";
+import { User, Heart } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
+
+export default function ChatMessage({ message, isUser }) {
+  return (
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
+      <div className={`flex gap-3 max-w-[80%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+          isUser 
+            ? 'bg-gradient-to-r from-blue-500 to-blue-600' 
+            : 'bg-gradient-to-r from-orange-400 to-red-500'
+        }`}>
+          {isUser ? (
+            <User className="w-4 h-4 text-white" />
+          ) : (
+            <Heart className="w-4 h-4 text-white" />
+          )}
+        </div>
+        
+        <Card className={`p-4 ${
+          isUser 
+            ? 'border-blue-200 bg-blue-50' 
+            : 'border-orange-200 bg-orange-50'
+        }`}>
+          <div className={`text-sm ${
+            isUser ? 'text-blue-900' : 'text-orange-900'
+          }`}>
+            {isUser ? (
+              <p className="whitespace-pre-wrap">{message.content}</p>
+            ) : (
+              <ReactMarkdown className="prose prose-sm max-w-none">
+                {message.content}
+              </ReactMarkdown>
+            )}
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}

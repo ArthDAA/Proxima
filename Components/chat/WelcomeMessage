@@ -1,0 +1,68 @@
+import React from 'react';
+import { Card } from "@/components/ui/card";
+import { Heart, Shield, Sparkles } from "lucide-react";
+
+export default function WelcomeMessage() {
+  return (
+    <div className="max-w-2xl mx-auto space-y-6">
+      <div className="text-center space-y-4">
+        <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
+          <Heart className="w-8 h-8 text-white" />
+        </div>
+        
+        <div>
+          <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--foreground)' }}>
+            Bonjour ! Je suis votre confident
+          </h1>
+          <p className="text-lg" style={{ color: 'var(--muted-foreground)' }}>
+            Racontez-moi votre journée, vos pensées, vos émotions. Je suis là pour vous écouter.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-4">
+        <Card className="p-4 text-center">
+          <Shield className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--primary)' }} />
+          <h3 className="font-medium mb-1" style={{ color: 'var(--foreground)' }}>
+            100% Confidentiel
+          </h3>
+          <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
+            Vos conversations restent privées et sécurisées
+          </p>
+        </Card>
+
+        <Card className="p-4 text-center">
+          <Heart className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--primary)' }} />
+          <h3 className="font-medium mb-1" style={{ color: 'var(--foreground)' }}>
+            Écoute Bienveillante
+          </h3>
+          <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
+            Sans jugement, avec empathie et compréhension
+          </p>
+        </Card>
+
+        <Card className="p-4 text-center">
+          <Sparkles className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--primary)' }} />
+          <h3 className="font-medium mb-1" style={{ color: 'var(--foreground)' }}>
+            Analyse Personnalisée
+          </h3>
+          <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
+            Des conseils adaptés à votre situation unique
+          </p>
+        </Card>
+      </div>
+
+      <Card className="p-6 border-l-4" style={{ borderLeftColor: 'var(--primary)' }}>
+        <h3 className="font-semibold mb-2" style={{ color: 'var(--foreground)' }}>
+          Comment ça marche ?
+        </h3>
+        <ul className="space-y-2 text-sm" style={{ color: 'var(--muted-foreground)' }}>
+          <li>• Partagez librement vos pensées et expériences</li>
+          <li>• Plus vous me parlez, mieux je vous comprends</li>
+          <li>• Utilisez "Analyse & Conseil" pour des insights approfondis</li>
+          <li>• En cas de conflit, je peux créer une médiation avec d'autres</li>
+        </ul>
+      </Card>
+    </div>
+  );
+}

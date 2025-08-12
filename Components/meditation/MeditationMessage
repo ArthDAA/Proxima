@@ -1,0 +1,84 @@
+import React from 'react';
+import { Card } from "@/components/ui/card";
+import { User, Heart, Lock } from "lucide-react";
+import ReactMarkdown from 'react-markdown';
+import { Badge } from "@/components/ui/badge";
+
+export default function MediationMessage({ message, currentUser, currentPhase }) {
+  const isUser = message.sender === "user";
+  const isOwnMessage = isUser && message.sender_email === currentUser.email;
+  const isConfidential = message.is_confidential;
+
+  const getMessageAuthor = () => {
+    if (message.sender === "ai") return "Médiateur";
+    if (isOwnMessage) return "Vous";
+    return message.sender_email?.split('@')[0] || "Participant";
+  };
+
+  const getMessageStyle = () => {
+    if (message.sender === "ai") {
+      return {
+        border: "border-orange-200",
+        bg: "bg-orange-50",
+        text: "text-orange-900",
+        gradient: "from-orange-400 to-red-500"
+      };
+    } else if (isOwnMessage) {
+      return {
+        border: "border-blue-200",
+        bg: "bg-blue-50",
+        text: "text-blue-900",
+        gradient: "from-blue-500 to-blue-600"
+      };
+    } else {
+      return {
+        border: "border-green-200",
+        bg: "bg-green-50",
+        text: "text-green-900",
+        gradient: "from-green-500 to-green-600"
+      };
+    }
+  };
+
+  const styles = getMessageStyle();
+
+  return (
+    <div className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'} mb-4`}>
+      <div className={`flex gap-3 max-w-[80%] ${isOwnMessage ? 'flex-row-reverse' : 'flex-row'}`}>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-gradient-to-r ${styles.gradient}`}>
+          {message.sender === "ai" ? (
+            <Heart className="w-4 h-4 text-white" />
+          ) : (
+            <User className="w-4 h-4 text-white" />
+          )}
+        </div>
+        
+        <div className="flex flex-col gap-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium" style={{ color: 'var(--muted-foreground)' }}>
+              {getMessageAuthor()}
+            </span>
+            {isConfidential && currentPhase === "private" && (
+              <Badge variant="outline" className="text-xs h-4 px-1">
+                <Lock className="w-2 h-2 mr-1" />
+                Privé
+              </Badge>
+            )}
+          </div>
+          
+          <Card className={`p-4 ${styles.border} ${styles.bg}`}>
+            <div className={`text-sm ${styles.text}`}>
+              {isUser ? (
+                <p className="whitespace-pre-wrap">{message.content}</p>
+              ) : (
+                <ReactMarkdown className="prose prose-sm max-w-none">
+                  {message.content}
+                </ReactMarkdown>
+              )}
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,57 @@
+{
+  "name": "Conversation",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "personal",
+        "private_mediation",
+        "group_mediation"
+      ],
+      "description": "Type de conversation"
+    },
+    "title": {
+      "type": "string",
+      "description": "Titre de la conversation (pour les médiations)"
+    },
+    "participants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des emails des participants"
+    },
+    "mediation_code": {
+      "type": "string",
+      "description": "Code unique pour rejoindre une médiation"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "waiting_participants",
+        "analysis",
+        "group_discussion",
+        "resolved"
+      ],
+      "default": "active",
+      "description": "Statut de la médiation"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Sujet du conflit"
+    },
+    "ai_analysis": {
+      "type": "string",
+      "description": "Analyse IA de la situation"
+    },
+    "confidential_notes": {
+      "type": "string",
+      "description": "Notes confidentielles de l'utilisateur"
+    }
+  },
+  "required": [
+    "type"
+  ]
+}

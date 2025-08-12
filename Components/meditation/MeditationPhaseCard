@@ -1,0 +1,53 @@
+import React from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Lock, Users, Info } from "lucide-react";
+
+export default function MediationPhaseCard({ currentPhase }) {
+  if (currentPhase === "private") {
+    return (
+      <div className="p-4 border-b" style={{ borderColor: 'var(--border)' }}>
+        <Card style={{ backgroundColor: 'var(--muted)' }}>
+          <CardContent className="p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <Lock className="w-4 h-4 text-blue-600" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-medium mb-1" style={{ color: 'var(--foreground)' }}>
+                  Phase privée - Exprimez-vous librement
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+                  Cette conversation est privée et confidentielle. Racontez votre version des faits, 
+                  exprimez vos émotions et vos besoins. Seul le médiateur peut voir vos messages.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 border-b" style={{ borderColor: 'var(--border)' }}>
+      <Card style={{ backgroundColor: 'var(--muted)' }}>
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+              <Users className="w-4 h-4 text-purple-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-medium mb-1" style={{ color: 'var(--foreground)' }}>
+                Discussion de groupe - Construisons ensemble
+              </h3>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+                Tous les participants peuvent maintenant voir vos messages. Le médiateur a analysé 
+                la situation et propose des solutions. Discutons pour trouver un accord.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
